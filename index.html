@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sin Remordimientos — Vive sano sin sacrificios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    :root {
+      --red:   #e51924; --pink: #fa777c;
+      --gold:  #d2b540; --lime: #a5bd0f; --teal: #05a3a4;
+      --dark:  #012e2f; --dark-2: #013d3e;
+      --cream: #fdfaf4; --text: #1a1a1a; --muted: #6b7280;
+      --white: #ffffff; --border: rgba(0,0,0,0.08);
+      --light-teal: #e0f7f7;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--text); overflow-x:hidden; line-height:1.6; }
+
+    /* ─── GRAD TEXT ─── */
+    .grad-text {
+      background: linear-gradient(100deg, var(--red) 0%, var(--pink) 22%, var(--gold) 48%, var(--lime) 72%, var(--teal) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+
+    /* ─── BG IMAGE SYSTEM ─── */
+    .bg-wrap { position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+    .bg-img   { width:100%; height:100%; object-fit:cover; animation:kenBurns 18s ease-in-out infinite alternate; }
+    .bg-overlay-dark  { position:absolute; inset:0; background:var(--dark); opacity:0.88; }
+    .bg-overlay-dark2 { position:absolute; inset:0; background:var(--dark-2); opacity:0.86; }
+    .bg-overlay-cream { position:absolute; inset:0; background:var(--cream); opacity:0.91; }
+    .bg-overlay-teal  { position:absolute; inset:0; background:var(--light-teal); opacity:0.88; }
+    .bg-overlay-white { position:absolute; inset:0; background:#fff; opacity:0.92; }
+
+    /* ─── NAV ─── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      padding:0.9rem 2.5rem; display:flex; justify-content:space-between; align-items:center;
+      background:rgba(253,250,244,0.96); backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border); transition:box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+
+    .logo-wrap { display:flex; flex-direction:column; line-height:1.1; }
+    .logo-main { font-family:'Fraunces',serif; font-size:1.25rem; font-weight:900; letter-spacing:-0.01em; }
+    .logo-sub  { font-size:0.6rem; color:var(--muted); letter-spacing:0.16em; text-transform:uppercase; font-weight:500; }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display:inline-flex; align-items:center; gap:0.6rem;
+      padding:0.9rem 2rem; border-radius:100px;
+      font-size:0.95rem; font-weight:700; text-decoration:none;
+      position:relative; overflow:hidden; cursor:pointer;
+      transition: transform 0.25s cubic-bezier(.16,1,.3,1), box-shadow 0.25s;
+    }
+    .btn::after {
+      content:''; position:absolute; inset:0;
+      background:rgba(255,255,255,0.15); opacity:0;
+      transition:opacity 0.2s;
+    }
+    .btn:hover::after { opacity:1; }
+    .btn:hover { transform:translateY(-3px); }
+    .btn:active { transform:translateY(0) scale(0.97); }
+
+    .btn-red {
+      background:linear-gradient(135deg, var(--red) 0%, #c8141e 100%);
+      color:var(--white);
+      box-shadow: 0 4px 20px rgba(229,25,36,0.35);
+    }
+    .btn-red:hover { box-shadow:0 12px 40px rgba(229,25,36,0.5); }
+
+    .btn-outline-light {
+      background:transparent; color:rgba(255,255,255,0.5);
+      border:1.5px solid rgba(255,255,255,0.18);
+    }
+    .btn-outline-light:hover { color:rgba(255,255,255,0.9); border-color:rgba(255,255,255,0.4); }
+
+    .nav-cta {
+      background:linear-gradient(135deg,var(--red),var(--pink));
+      color:var(--white); padding:0.58rem 1.4rem; border-radius:100px;
+      font-size:0.875rem; font-weight:700; text-decoration:none;
+      box-shadow:0 4px 16px rgba(229,25,36,0.3);
+      transition:all 0.25s cubic-bezier(.16,1,.3,1);
+    }
+    .nav-cta:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(229,25,36,0.45); }
+
+    /* Ripple */
+    .ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.4); transform:scale(0); animation:rippleAnim 0.55s linear; pointer-events:none; }
+    @keyframes rippleAnim { to { transform:scale(4); opacity:0; } }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+      align-items:center; padding:8rem 8vw 5rem; position:relative; overflow:hidden; gap:4rem;
+    }
+
+    .hero-blobs { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .blob { position:absolute; border-radius:60% 40% 70% 30%/50% 60% 40% 50%; animation:blobMorph 10s ease-in-out infinite; }
+    .blob-1 { width:400px; height:400px; top:-15%; right:-5%;  background:radial-gradient(circle,rgba(229,25,36,0.22) 0%,transparent 65%); animation-delay:0s; }
+    .blob-2 { width:300px; height:300px; bottom:-10%; left:-3%; background:radial-gradient(circle,rgba(5,163,164,0.25) 0%,transparent 65%); animation-delay:2s; }
+    .blob-3 { width:220px; height:220px; top:35%; left:42%;    background:radial-gradient(circle,rgba(210,181,64,0.15) 0%,transparent 65%); animation-delay:4s; }
+
+    .hero-content { position:relative; z-index:2; }
+
+    .hero-tag {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      background:rgba(255,255,255,0.06); color:#ffd080;
+      padding:0.4rem 1rem; border-radius:100px;
+      font-size:0.76rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:600;
+      margin-bottom:1.8rem; border:1px solid rgba(210,181,64,0.25);
+      animation:fadeUp 0.7s cubic-bezier(.16,1,.3,1) 0.1s both;
+    }
+    .hero h1 { font-family:'Fraunces',serif; font-size:clamp(3rem,5.5vw,6rem); line-height:1.05; font-weight:900; color:var(--white); margin-bottom:1.5rem; animation:fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.25s both; }
+    .hero-sub { font-size:clamp(1rem,1.2vw,1.25rem); color:rgba(255,255,255,0.52); max-width:520px; line-height:1.8; font-weight:300; margin-bottom:2.5rem; animation:fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; animation:fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.55s both; }
+
+    /* Floating cards */
+    .hero-visual { position:relative; z-index:2; display:flex; justify-content:center; align-items:center; }
+    .hero-card-stack { position:relative; width:300px; height:480px; }
+    .hcard { position:absolute; border-radius:20px; padding:1.3rem 1.5rem; backdrop-filter:blur(10px); width:260px; }
+    .hcard-1 { top:0;   left:20px; background:rgba(229,25,36,0.2);  border:1px solid rgba(229,25,36,0.35); animation:float1 5s ease-in-out infinite; }
+    .hcard-2 { top:150px; left:0;   background:rgba(210,181,64,0.2); border:1px solid rgba(210,181,64,0.35); animation:float2 6s ease-in-out 0.6s infinite; }
+    .hcard-3 { top:300px; left:20px; background:rgba(5,163,164,0.2);  border:1px solid rgba(5,163,164,0.35); animation:float3 4.5s ease-in-out 1.2s infinite; }
+    .hcard-emoji { font-size:1.8rem; margin-bottom:0.5rem; display:block; }
+    .hcard-title { font-weight:600; color:var(--white); font-size:0.88rem; margin-bottom:0.2rem; }
+    .hcard-desc  { font-size:0.74rem; color:rgba(255,255,255,0.45); line-height:1.5; }
+
+    /* ─── SHARED ─── */
+    .container { max-width:1280px; margin:0 auto; }
+    .section-tag { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.16em; font-weight:600; margin-bottom:0.75rem; }
+    .section-title { font-family:'Fraunces',serif; font-size:clamp(2.2rem,3.5vw,3.8rem); font-weight:900; line-height:1.1; color:var(--text); }
+    .section-title em { font-style:italic; font-weight:400; }
+    .section-title.light { color:var(--white); }
+
+    /* ─── PAIN ─── */
+    .pain { padding:7rem 2rem; position:relative; overflow:hidden; background:var(--cream); }
+    .pain-intro { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; position:relative; z-index:1; }
+    .pain-body { font-size:1.05rem; color:var(--muted); line-height:1.8; margin-top:1rem; font-weight:300; }
+    .pain-list { display:grid; gap:0.85rem; }
+    .pain-item {
+      display:flex; align-items:center; gap:1rem;
+      background:rgba(255,255,255,0.85); border:1px solid var(--border);
+      border-radius:14px; padding:1rem 1.4rem;
+      font-size:0.92rem; color:var(--muted);
+      transition:all 0.22s cubic-bezier(.16,1,.3,1); backdrop-filter:blur(4px);
+    }
+    .pain-item:hover { border-color:rgba(229,25,36,0.25); transform:translateX(5px); background:rgba(255,248,248,0.95); }
+    .pain-item-icon { font-size:1.4rem; flex-shrink:0; }
+
+    /* ─── SOLUTION ─── */
+    .solution { padding:7rem 2rem; position:relative; overflow:hidden; }
+    .solution .container { position:relative; z-index:1; }
+    .solution-sub { font-size:1rem; color:rgba(255,255,255,0.5); max-width:480px; line-height:1.8; font-weight:300; margin:1rem 0 3rem; }
+    .solution-pills { display:flex; flex-wrap:wrap; gap:0.75rem; }
+    .pill { display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:0.6rem 1.2rem; font-size:0.88rem; color:rgba(255,255,255,0.72); transition:all 0.22s; cursor:default; }
+    .pill:hover { background:rgba(5,163,164,0.18); border-color:rgba(5,163,164,0.4); transform:translateY(-2px); box-shadow:0 6px 18px rgba(5,163,164,0.2); }
+    .pill-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .dot-r{background:var(--red)} .dot-p{background:var(--pink)} .dot-g{background:var(--gold)} .dot-l{background:var(--lime)} .dot-t{background:var(--teal)}
+
+    /* ─── PACKAGES ─── */
+    .packages { padding:7rem 2rem; position:relative; overflow:hidden; }
+    .packages .container { position:relative; z-index:1; }
+    .packages-header { text-align:center; margin-bottom:1rem; }
+    .packages-sub { text-align:center; font-size:1rem; color:var(--muted); max-width:480px; margin:0.75rem auto 4rem; font-weight:300; line-height:1.7; }
+    .packages-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; align-items:start; }
+
+    .pkg-card {
+      background:rgba(255,255,255,0.92); border:2px solid rgba(0,0,0,0.07);
+      border-radius:28px; padding:2.5rem 2rem; position:relative;
+      transition:all 0.28s cubic-bezier(.16,1,.3,1); backdrop-filter:blur(8px);
+    }
+    .pkg-card:hover { transform:translateY(-8px); box-shadow:0 24px 64px rgba(0,0,0,0.1); }
+    .pkg-card.featured { border-color:var(--red); transform:translateY(-14px); animation:featuredPulse 3s ease-in-out infinite; }
+    .pkg-card.featured:hover { transform:translateY(-20px); }
+
+    .pkg-badge {
+      position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+      background:linear-gradient(100deg,var(--red),var(--pink));
+      color:var(--white); font-size:0.68rem; font-weight:700;
+      letter-spacing:0.1em; text-transform:uppercase;
+      padding:0.35rem 1.2rem; border-radius:100px; white-space:nowrap;
+      box-shadow:0 4px 16px rgba(229,25,36,0.4);
+    }
+
+    .pkg-emoji   { font-size:2.5rem; margin-bottom:1rem; display:block; }
+    .pkg-name    { font-family:'Fraunces',serif; font-size:1.5rem; font-weight:900; color:var(--text); margin-bottom:0.3rem; }
+    .pkg-tagline { font-size:0.82rem; color:var(--muted); margin-bottom:1.5rem; font-weight:300; }
+    .pkg-divider { height:1px; background:var(--border); margin:1.5rem 0; }
+    .pkg-features { display:grid; gap:0.6rem; margin-bottom:2rem; }
+    .pkg-feature { display:flex; align-items:flex-start; gap:0.6rem; font-size:0.88rem; color:var(--muted); line-height:1.5; }
+    .pkg-check { font-weight:700; flex-shrink:0; margin-top:1px; }
+    .ck-r{color:var(--red)} .ck-t{color:var(--teal)} .ck-l{color:var(--lime)}
+
+    .pkg-btn {
+      display:block; text-align:center; padding:0.9rem;
+      border-radius:14px; font-weight:700; font-size:0.92rem; text-decoration:none;
+      position:relative; overflow:hidden;
+      transition:all 0.25s cubic-bezier(.16,1,.3,1);
+    }
+    .pkg-btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0.15); opacity:0; transition:opacity 0.2s; }
+    .pkg-btn:hover::after { opacity:1; }
+    .pkg-btn:hover { transform:translateY(-2px); }
+    .pkg-btn:active { transform:scale(0.97); }
+    .pkg-btn-red  { background:linear-gradient(135deg,var(--red),#c8141e); color:var(--white); box-shadow:0 6px 24px rgba(229,25,36,0.35); }
+    .pkg-btn-red:hover { box-shadow:0 12px 36px rgba(229,25,36,0.5); }
+    .pkg-btn-teal { background:transparent; color:var(--teal); border:2px solid rgba(5,163,164,0.3); }
+    .pkg-btn-teal:hover { background:var(--light-teal); border-color:var(--teal); box-shadow:0 6px 20px rgba(5,163,164,0.2); }
+
+    /* ─── PRODUCTS ─── */
+    .products { padding:7rem 2rem; position:relative; overflow:hidden; }
+    .products .container { position:relative; z-index:1; }
+    .products-sub { font-size:1rem; color:var(--muted); max-width:450px; line-height:1.7; font-weight:300; margin:0.75rem 0 3.5rem; }
+    .products-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+    .product-card {
+      background:rgba(255,255,255,0.9); border-radius:22px; padding:1.8rem 1.5rem;
+      text-align:center; border:1px solid rgba(5,163,164,0.12);
+      transition:all 0.25s cubic-bezier(.16,1,.3,1); backdrop-filter:blur(6px);
+    }
+    .product-card:hover { transform:translateY(-6px); box-shadow:0 18px 48px rgba(5,163,164,0.18); border-color:rgba(5,163,164,0.35); }
+    .product-card:hover .product-emoji { animation:bounce 0.5s ease; display:inline-block; }
+    .product-emoji { font-size:2.5rem; margin-bottom:0.8rem; display:block; }
+    .product-name  { font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:0.3rem; }
+    .product-desc  { font-size:0.78rem; color:var(--muted); line-height:1.55; margin-bottom:1.2rem; }
+    .product-link  { font-size:0.8rem; color:var(--teal); font-weight:700; text-decoration:none; padding:0.5rem 1rem; border-radius:100px; border:1.5px solid rgba(5,163,164,0.25); transition:all 0.2s; display:inline-block; }
+    .product-link:hover { background:var(--teal); color:var(--white); border-color:var(--teal); }
+
+    /* ─── HOW ─── */
+    .how { padding:7rem 2rem; position:relative; overflow:hidden; background:var(--cream); }
+    .how .container { position:relative; z-index:1; text-align:center; }
+    .how-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:4rem; }
+    .how-step { text-align:center; padding:2.5rem 1.8rem; background:rgba(255,255,255,0.8); border-radius:24px; border:1px solid var(--border); transition:all 0.25s; backdrop-filter:blur(4px); }
+    .how-step:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,0,0,0.07); }
+    .how-step:nth-child(1) .how-number { color:rgba(229,25,36,0.12); }
+    .how-step:nth-child(2) .how-number { color:rgba(210,181,64,0.14); }
+    .how-step:nth-child(3) .how-number { color:rgba(5,163,164,0.13); }
+    .how-number { font-family:'Fraunces',serif; font-size:5rem; font-weight:900; line-height:1; margin-bottom:0.8rem; }
+    .how-icon   { font-size:2.2rem; margin-bottom:0.8rem; display:block; }
+    .how-title  { font-weight:700; font-size:1.05rem; color:var(--text); margin-bottom:0.5rem; }
+    .how-desc   { font-size:0.88rem; color:var(--muted); line-height:1.65; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { padding:7rem 2rem; position:relative; overflow:hidden; }
+    .testimonials .container { position:relative; z-index:1; }
+    .testi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3.5rem; }
+    .testi-card { background:rgba(255,255,255,0.88); border-radius:22px; padding:2rem 1.8rem; border:1px solid var(--border); transition:all 0.25s; backdrop-filter:blur(8px); }
+    .testi-card:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,0,0,0.08); }
+    .testi-top  { display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem; }
+    .testi-avatar { width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+    .av1 { background:rgba(229,25,36,0.1);  border:2px solid rgba(229,25,36,0.2); }
+    .av2 { background:rgba(210,181,64,0.1); border:2px solid rgba(210,181,64,0.2); }
+    .av3 { background:rgba(5,163,164,0.1);  border:2px solid rgba(5,163,164,0.2); }
+    .testi-name  { font-weight:700; font-size:0.92rem; color:var(--text); }
+    .testi-role  { font-size:0.75rem; color:var(--muted); }
+    .testi-stars { color:var(--gold); font-size:0.9rem; letter-spacing:0.04em; margin-bottom:0.8rem; }
+    .testi-text  { font-family:'Fraunces',serif; font-size:1rem; font-style:italic; color:var(--muted); line-height:1.7; }
+
+    /* ─── FINAL CTA ─── */
+    .final-cta { padding:8rem 2rem; text-align:center; position:relative; overflow:hidden; }
+    .final-cta .container { position:relative; z-index:1; max-width:600px; }
+    .cta-rings { position:absolute; inset:0; pointer-events:none; z-index:1; }
+    .ring { position:absolute; border-radius:50%; border:1px solid; }
+    .ring-1 { width:650px; height:650px; top:-30%; left:-12%; border-color:rgba(229,25,36,0.1); }
+    .ring-2 { width:500px; height:500px; bottom:-25%; right:-8%; border-color:rgba(5,163,164,0.12); }
+    .ring-3 { width:380px; height:380px; top:5%; right:10%; border-color:rgba(210,181,64,0.08); }
+
+    .final-cta h2 { font-family:'Fraunces',serif; font-size:clamp(2.4rem,5vw,4rem); font-weight:900; color:var(--white); margin-bottom:1rem; line-height:1.1; }
+    .cta-sub { color:rgba(255,255,255,0.48); font-size:1rem; margin-bottom:3rem; font-weight:300; }
+    .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    .whatsapp-btn {
+      display:inline-flex; align-items:center; gap:0.75rem;
+      background:linear-gradient(135deg,#25d366,#128c4a); color:var(--white);
+      padding:1rem 2.2rem; border-radius:100px;
+      font-size:0.95rem; font-weight:700; text-decoration:none;
+      box-shadow:0 8px 32px rgba(37,211,102,0.4);
+      animation:waPulse 2.5s ease-in-out infinite;
+      transition:all 0.25s cubic-bezier(.16,1,.3,1);
+      position:relative; overflow:hidden;
+    }
+    .whatsapp-btn:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(37,211,102,0.55); }
+
+    .store-btn {
+      display:inline-flex; align-items:center; gap:0.6rem;
+      color:rgba(255,255,255,0.55); padding:1rem 1.8rem;
+      border-radius:100px; font-size:0.88rem; text-decoration:none;
+      border:1.5px solid rgba(255,255,255,0.2); transition:all 0.2s;
+    }
+    .store-btn:hover { color:var(--white); border-color:rgba(255,255,255,0.55); background:rgba(255,255,255,0.06); }
+
+    .cta-note { margin-top:1.5rem; font-size:0.73rem; color:rgba(255,255,255,0.28); letter-spacing:0.04em; }
+
+    /* ─── FOOTER ─── */
+    footer { background:#010e0f; padding:2.5rem 2rem; text-align:center; }
+    .footer-logo { font-family:'Fraunces',serif; font-size:1.3rem; font-weight:900; margin-bottom:0.4rem; opacity:0.45; }
+    .footer-text { font-size:0.73rem; color:rgba(255,255,255,0.2); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp    { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes kenBurns  { from{transform:scale(1) translate(0,0)} to{transform:scale(1.1) translate(-2%,-1%)} }
+    @keyframes float1    { 0%,100%{transform:rotate(-4deg) translateY(0)} 50%{transform:rotate(-4deg) translateY(-10px)} }
+    @keyframes float2    { 0%,100%{transform:rotate(2deg)  translateY(0)} 50%{transform:rotate(2deg)  translateY(-14px)} }
+    @keyframes float3    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes blobMorph { 0%,100%{border-radius:60% 40% 70% 30%/50% 60% 40% 50%} 33%{border-radius:40% 60% 30% 70%/60% 30% 70% 40%} 66%{border-radius:70% 30% 50% 50%/30% 70% 30% 70%} }
+    @keyframes waPulse   { 0%,100%{box-shadow:0 8px 32px rgba(37,211,102,0.4)} 50%{box-shadow:0 8px 48px rgba(37,211,102,0.65)} }
+    @keyframes bounce    { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} 70%{transform:translateY(-4px)} }
+    @keyframes featuredPulse { 0%,100%{box-shadow:0 24px 72px rgba(229,25,36,0.18)} 50%{box-shadow:0 24px 72px rgba(229,25,36,0.35)} }
+    @keyframes rippleAnim { to{transform:scale(4);opacity:0} }
+
+    /* Scroll reveal */
+    .reveal      { opacity:0; transform:translateY(36px); transition:opacity 0.75s cubic-bezier(.16,1,.3,1),transform 0.75s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .delay-1 { transition-delay:0.1s; }
+    .delay-2 { transition-delay:0.22s; }
+    .delay-3 { transition-delay:0.34s; }
+
+    /* ─── SCROLL PROGRESS BAR ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
+      background: linear-gradient(90deg, var(--red), var(--pink), var(--gold), var(--lime), var(--teal));
+      width: 0%; transition: width 0.1s linear;
+      box-shadow: 0 0 8px rgba(229,25,36,0.5);
+    }
+
+    /* ─── SCROLL INDICATOR (hero) ─── */
+    .scroll-indicator {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      z-index: 2; cursor: pointer;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .scroll-indicator.hidden { opacity: 0; transform: translateX(-50%) translateY(10px); pointer-events: none; }
+    .scroll-indicator-text {
+      font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); font-weight: 500;
+    }
+    .scroll-indicator-mouse {
+      width: 22px; height: 34px; border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 100px; display: flex; justify-content: center; padding-top: 5px;
+    }
+    .scroll-indicator-dot {
+      width: 3px; height: 7px; background: rgba(255,255,255,0.5);
+      border-radius: 100px; animation: scrollDot 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollDot {
+      0%   { transform: translateY(0);   opacity: 1; }
+      80%  { transform: translateY(10px); opacity: 0; }
+      100% { transform: translateY(0);   opacity: 0; }
+    }
+
+    /* ─── BACK TO TOP ─── */
+    .back-top {
+      position: fixed; bottom: 7rem; right: 2rem; z-index: 999;
+      width: 46px; height: 46px; border-radius: 50%;
+      background: rgba(1,46,47,0.92); border: 1.5px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      backdrop-filter: blur(8px);
+      opacity: 0; transform: translateY(12px);
+      transition: all 0.3s cubic-bezier(.16,1,.3,1);
+      pointer-events: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+    .back-top.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .back-top:hover { background: var(--teal); color: var(--white); border-color: var(--teal); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(5,163,164,0.4); }
+    .back-top svg { width: 18px; height: 18px; }
+
+    @media(max-width:900px){
+      .back-top { right: 1.2rem; bottom: 5.5rem; }
+    }
+
+    /* ─── IRIDESCENT BADGE ─── */
+    @property --shine-angle {
+      syntax: '<angle>'; initial-value: 0deg; inherits: false;
+    }
+    .badge-iridescent {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1.3rem; border-radius: 100px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: default;
+      position: relative; overflow: hidden;
+      color: #3a2800;
+      background: conic-gradient(
+        from var(--shine-angle),
+        #c8860a, #ffd700, #fffacd, #f0c030,
+        #e8a800, #fff0a0, #d4960e, #ffd700, #c8860a
+      );
+      animation: iridRotate 3s linear infinite;
+      box-shadow: 0 2px 16px rgba(212,160,0,0.45), 0 0 0 1px rgba(255,215,0,0.3);
+    }
+    .badge-iridescent::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: shineMove 2.5s ease-in-out infinite;
+    }
+    @keyframes iridRotate { to { --shine-angle: 360deg; } }
+    @keyframes shineMove  { 0%,100%{background-position:200% center} 50%{background-position:-200% center} }
+
+    .badge-iridescent-dark {
+      color: #1a0e00;
+      box-shadow: 0 4px 24px rgba(212,160,0,0.5), 0 0 0 1.5px rgba(255,215,0,0.4);
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar { background:var(--dark); padding:2.2rem 4vw; position:relative; overflow:hidden; z-index:1; }
+    .stats-bar::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,rgba(229,25,36,0.08),rgba(5,163,164,0.08),rgba(210,181,64,0.08)); }
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; position:relative; z-index:1; }
+    .stat-item { text-align:center; padding:1rem; border-right:1px solid rgba(255,255,255,0.06); }
+    .stat-item:last-child { border-right:none; }
+    .stat-number { font-family:'Fraunces',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:900; line-height:1; margin-bottom:0.3rem; }
+    .stat-label  { font-size:0.78rem; color:rgba(255,255,255,0.45); letter-spacing:0.05em; font-weight:300; }
+
+    /* ─── SCARCITY ─── */
+    .scarcity { margin-bottom:1.4rem; }
+    .scarcity-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; }
+    .scarcity-text  { font-size:0.76rem; font-weight:600; }
+    .scarcity-count { font-size:0.72rem; color:var(--muted); }
+    .scarcity-bar   { height:5px; background:rgba(0,0,0,0.08); border-radius:100px; overflow:hidden; }
+    .scarcity-fill  { height:100%; border-radius:100px; transition:width 1.2s cubic-bezier(.16,1,.3,1); width:0; }
+    .fill-teal { background:linear-gradient(90deg,var(--teal),#7dd4a0); }
+    .fill-red  { background:linear-gradient(90deg,var(--red),var(--pink)); }
+    .fill-lime { background:linear-gradient(90deg,var(--lime),var(--gold)); }
+    .scarcity-urgent { font-size:0.7rem; color:var(--red); font-weight:700; margin-top:0.3rem; animation:urgentBlink 1.5s ease-in-out infinite; }
+    @keyframes urgentBlink { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    /* ─── GUARANTEE ─── */
+    .guarantee { padding:7rem 4vw; position:relative; overflow:hidden; background:var(--dark-2); }
+    .guarantee .container { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1.4fr; gap:5rem; align-items:center; }
+    .guarantee-seal {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      width:220px; height:220px; border-radius:50%; margin:0 auto;
+      background:conic-gradient(from 0deg, var(--red),var(--pink),var(--gold),var(--lime),var(--teal),var(--red));
+      padding:4px; animation:rotateSeal 8s linear infinite;
+    }
+    .seal-inner {
+      width:100%; height:100%; border-radius:50%;
+      background:var(--dark-2); display:flex; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center; padding:1.5rem;
+    }
+    .seal-icon   { font-size:2.5rem; margin-bottom:0.4rem; display:block; }
+    .seal-days   { font-family:'Fraunces',serif; font-size:2.8rem; font-weight:900; color:var(--white); line-height:1; }
+    .seal-unit   { font-size:0.7rem; color:rgba(255,255,255,0.4); letter-spacing:0.1em; text-transform:uppercase; }
+    .seal-word   { font-size:0.72rem; color:var(--gold); font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-top:0.2rem; }
+    @keyframes rotateSeal { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    .guarantee-text h2 { font-family:'Fraunces',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:900; color:var(--white); margin-bottom:1rem; line-height:1.15; }
+    .guarantee-text p  { font-size:1rem; color:rgba(255,255,255,0.48); line-height:1.8; font-weight:300; margin-bottom:2rem; }
+    .guarantee-points  { display:grid; gap:0.75rem; }
+    .guarantee-point   { display:flex; align-items:center; gap:0.8rem; font-size:0.9rem; color:rgba(255,255,255,0.7); }
+    .gp-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; flex-shrink:0; }
+    .gp-r { background:rgba(229,25,36,0.2); }
+    .gp-g { background:rgba(210,181,64,0.2); }
+    .gp-t { background:rgba(5,163,164,0.2); }
+    .gp-l { background:rgba(165,189,15,0.2); }
+
+    /* ─── FAQ ─── */
+    .faq { padding:7rem 4vw; position:relative; overflow:hidden; background:var(--cream); }
+    .faq .container { position:relative; z-index:1; max-width:800px; margin:0 auto; }
+    .faq-list  { display:grid; gap:0.75rem; margin-top:3.5rem; }
+    .faq-item  { background:var(--white); border:1.5px solid var(--border); border-radius:18px; overflow:hidden; transition:border-color 0.2s; }
+    .faq-item.open { border-color:rgba(229,25,36,0.25); }
+    .faq-q {
+      display:flex; align-items:center; justify-content:space-between; gap:1rem;
+      padding:1.3rem 1.6rem; cursor:pointer; font-weight:600; font-size:0.97rem; color:var(--text);
+      user-select:none;
+    }
+    .faq-q:hover { color:var(--red); }
+    .faq-icon { width:28px; height:28px; border-radius:50%; background:var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.3s cubic-bezier(.16,1,.3,1); font-size:0.8rem; color:var(--muted); }
+    .faq-item.open .faq-icon { background:var(--red); color:var(--white); transform:rotate(45deg); }
+    .faq-a { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(.16,1,.3,1); }
+    .faq-a-inner { padding:0 1.6rem 1.4rem; font-size:0.9rem; color:var(--muted); line-height:1.75; font-weight:300; }
+    .faq-item.open .faq-a { max-height:200px; }
+
+    /* ─── FLOATING WHATSAPP ─── */
+    .float-wa {
+      position:fixed; bottom:2rem; right:2rem; z-index:999;
+      display:flex; align-items:center; gap:0.7rem;
+      background:linear-gradient(135deg,#25d366,#128c4a);
+      color:var(--white); padding:0.85rem 1.4rem 0.85rem 1rem;
+      border-radius:100px; text-decoration:none; font-weight:700; font-size:0.9rem;
+      box-shadow:0 8px 32px rgba(37,211,102,0.45);
+      animation:floatIn 0.6s cubic-bezier(.16,1,.3,1) 2s both, floatWAPulse 2.5s ease-in-out 3s infinite;
+      transition:transform 0.25s cubic-bezier(.16,1,.3,1);
+    }
+    .float-wa:hover { transform:translateY(-4px) scale(1.03); box-shadow:0 14px 44px rgba(37,211,102,0.6); }
+    .float-wa-icon { width:26px; height:26px; flex-shrink:0; }
+    .float-wa-badge { position:absolute; top:-6px; right:-4px; background:var(--red); color:var(--white); width:20px; height:20px; border-radius:50%; font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid var(--white); animation:badgePop 0.4s cubic-bezier(.16,1,.3,1) 2.6s both; opacity:0; }
+    @keyframes floatIn       { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes floatWAPulse  { 0%,100%{box-shadow:0 8px 32px rgba(37,211,102,0.45)} 50%{box-shadow:0 8px 48px rgba(37,211,102,0.7)} }
+    @keyframes badgePop      { from{opacity:0;transform:scale(0)} to{opacity:1;transform:scale(1)} }
+
+    /* ─── STICKY MOBILE CTA ─── */
+    .sticky-cta { display:none; position:fixed; bottom:0; left:0; right:0; z-index:998; padding:0.9rem 1.2rem; background:rgba(1,46,47,0.97); backdrop-filter:blur(12px); border-top:1px solid rgba(255,255,255,0.08); }
+    .sticky-cta a { display:flex; align-items:center; justify-content:center; gap:0.6rem; background:linear-gradient(135deg,#25d366,#128c4a); color:var(--white); padding:0.85rem; border-radius:14px; font-weight:700; font-size:0.92rem; text-decoration:none; }
+    @media(max-width:900px){ .sticky-cta{display:block;} .float-wa{display:none;} }
+
+    /* ─── LARGE SCREENS ─── */
+    @media(min-width:1400px){
+      .pain,.solution,.packages,.products,.how,.testimonials,.final-cta { padding:9rem 6vw; }
+      .pain-body,.solution-sub,.products-sub,.packages-sub,.how-desc,.testi-text { font-size:1rem; }
+      .pkg-name { font-size:1.7rem; }
+      .how-number { font-size:6rem; }
+      .btn { padding:1rem 2.4rem; font-size:1.05rem; }
+      .hcard { width:280px; }
+      .hero-card-stack { width:340px; height:520px; }
+      .hcard-2 { top:170px; }
+      .hcard-3 { top:340px; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr;padding:7rem 2rem 4rem}
+      .hero-visual{display:none}
+      .pain-intro{grid-template-columns:1fr;gap:2.5rem}
+      .packages-grid{grid-template-columns:1fr}
+      .pkg-card.featured{transform:none;animation:none}
+      .products-grid{grid-template-columns:1fr 1fr}
+      .how-grid,.testi-grid{grid-template-columns:1fr}
+      .pain,.solution,.packages,.products,.how,.testimonials,.final-cta{padding:5rem 1.5rem}
+    }
+    @media(max-width:480px){
+      nav{padding:1rem 1.25rem}
+      .products-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS BAR -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-wrap">
+    <span class="logo-main grad-text">Sin Remordimientos</span>
+    <span class="logo-sub">Nutrición · Bienestar · Vida</span>
+  </div>
+  <a href="#paquetes" class="nav-cta">Ver paquetes</a>
+</nav>
+
+<!-- HERO — fondo: bowls de comida colorida -->
+<section class="hero">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1920&auto=format&fit=crop&q=80" alt="" loading="eager">
+    <div class="bg-overlay-dark"></div>
+  </div>
+  <div class="hero-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-tag">🌿 Nutrición sin culpa</span>
+    <h1>Vivir sano<br>nunca fue <span class="grad-text">tan rico</span></h1>
+    <p class="hero-sub">Olvida las dietas imposibles y los sacrificios sin fin. Tenemos una forma de nutrirte bien que se adapta a tu vida — no al revés.</p>
+    <div class="hero-btns">
+      <a href="#paquetes" class="btn btn-red ripple-btn">
+        Quiero empezar
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#como-funciona" class="btn btn-outline-light ripple-btn">¿Cómo funciona?</a>
+    </div>
+    <div style="margin-top:1.8rem;">
+      <span class="badge-iridescent">🛡️ Garantía de satisfacción 30 días</span>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-stack">
+      <div class="hcard hcard-1"><span class="hcard-emoji">🥤</span><div class="hcard-title">Nutrición completa</div><p class="hcard-desc">Proteínas, vitaminas y minerales en cada toma</p></div>
+      <div class="hcard hcard-2"><span class="hcard-emoji">⚡</span><div class="hcard-title">Energía todo el día</div><p class="hcard-desc">Sin bajones, sin cafeína excesiva, sin rebotes</p></div>
+      <div class="hcard hcard-3"><span class="hcard-emoji">🎯</span><div class="hcard-title">Resultados reales</div><p class="hcard-desc">Con acompañamiento personalizado desde el día 1</p></div>
+    </div>
+  </div>
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator" id="scrollIndicator" onclick="window.scrollBy({top:window.innerHeight,behavior:'smooth'})">
+    <span class="scroll-indicator-text">Scroll</span>
+    <div class="scroll-indicator-mouse">
+      <div class="scroll-indicator-dot"></div>
+    </div>
+  </div>
+</section>
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number grad-text" data-target="1247">0</div>
+        <div class="stat-label">Personas transformadas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" style="color:var(--gold)" data-target="49" data-decimal="1">0</div>
+        <div class="stat-label">★ Satisfacción promedio</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" style="color:var(--lime)" data-target="98" data-suffix="%">0</div>
+        <div class="stat-label">Vuelven a pedir</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" style="color:var(--pink)" data-target="8" data-suffix="kg" data-prefix="-">0</div>
+        <div class="stat-label">Promedio en 30 días</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN — fondo: familia feliz comiendo -->
+<section class="pain">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-cream"></div>
+  </div>
+  <div class="container">
+    <div class="pain-intro">
+      <div class="pain-text-block reveal">
+        <p class="section-tag" style="color:var(--red)">El problema de siempre</p>
+        <h2 class="section-title">¿Te suena <em style="color:var(--red)">familiar?</em></h2>
+        <p class="pain-body">Las dietas duran una semana. Los batidos saben a cartón. Los planes te piden que dejes de vivir. Y al final, terminas exactamente donde empezaste — pero más frustrado.</p>
+      </div>
+      <div class="pain-list">
+        <div class="pain-item"><span class="pain-item-icon">😩</span>Dietas imposibles que duran 3 días</div>
+        <div class="pain-item"><span class="pain-item-icon">💸</span>Productos carísimos que no funcionan</div>
+        <div class="pain-item"><span class="pain-item-icon">😴</span>Sin energía aunque "comes bien"</div>
+        <div class="pain-item"><span class="pain-item-icon">🔄</span>El efecto rebote de siempre</div>
+        <div class="pain-item"><span class="pain-item-icon">🤷</span>No saber qué tomar ni cuándo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION — fondo: ingredientes naturales frescos -->
+<section class="solution">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-dark2"></div>
+  </div>
+  <div class="container">
+    <p class="section-tag reveal" style="color:#7dd4a0">Nuestra forma</p>
+    <h2 class="section-title light reveal delay-1">Nutrición que <span class="grad-text">sabe bien</span><br>y funciona mejor</h2>
+    <p class="solution-sub reveal delay-2">No te pedimos que dejes de disfrutar. Te damos lo que tu cuerpo necesita de una forma que querrás repetir todos los días.</p>
+    <div class="solution-pills">
+      <div class="pill"><span class="pill-dot dot-r"></span>Sin pasar hambre</div>
+      <div class="pill"><span class="pill-dot dot-p"></span>Sabores que sorprenden</div>
+      <div class="pill"><span class="pill-dot dot-g"></span>Resultados desde la semana 1</div>
+      <div class="pill"><span class="pill-dot dot-l"></span>Con asesor personal</div>
+      <div class="pill"><span class="pill-dot dot-t"></span>Fácil de preparar</div>
+      <div class="pill"><span class="pill-dot dot-r"></span>Se adapta a tu rutina</div>
+      <div class="pill"><span class="pill-dot dot-g"></span>Respaldo científico</div>
+      <div class="pill"><span class="pill-dot dot-t"></span>Comunidad de apoyo</div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES — fondo: comida saludable colorida -->
+<section class="packages" id="paquetes">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-cream"></div>
+  </div>
+  <div class="container">
+    <div class="packages-header reveal">
+      <p class="section-tag" style="color:var(--red)">Elige tu camino</p>
+      <h2 class="section-title">Tu paquete <span class="grad-text">ideal</span></h2>
+    </div>
+    <p class="packages-sub reveal delay-1">Tres opciones diseñadas para que empieces donde puedas y llegues donde quieras. Sin excusas para no empezar.</p>
+    <div style="text-align:center;margin-bottom:3rem;" class="reveal delay-2">
+      <span class="badge-iridescent badge-iridescent-dark">🛡️ Todos los paquetes incluyen garantía de 30 días · Sin letra pequeña</span>
+    </div>
+    <div class="packages-grid">
+      <div class="pkg-card reveal delay-1">
+        <span class="pkg-emoji">🌱</span>
+        <div class="pkg-name">Primer Paso</div>
+        <div class="pkg-tagline">Empieza sin complicarte</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-features">
+          <div class="pkg-feature"><span class="pkg-check ck-t">✓</span> Batido nutricional x1</div>
+          <div class="pkg-feature"><span class="pkg-check ck-t">✓</span> Té de hierbas x1</div>
+          <div class="pkg-feature"><span class="pkg-check ck-t">✓</span> Guía de inicio</div>
+          <div class="pkg-feature"><span class="pkg-check ck-t">✓</span> Soporte por WhatsApp</div>
+        </div>
+        <a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20el%20paquete%20Primer%20Paso" class="pkg-btn pkg-btn-teal ripple-btn" target="_blank">Lo quiero</a>
+        <div class="scarcity" style="margin-top:1rem;margin-bottom:0">
+          <div class="scarcity-label"><span class="scarcity-text" style="color:var(--teal)">📦 Disponibilidad</span><span class="scarcity-count">11 de 15</span></div>
+          <div class="scarcity-bar"><div class="scarcity-fill fill-teal" data-width="73"></div></div>
+        </div>
+      </div>
+      <div class="pkg-card featured reveal delay-2">
+        <div class="pkg-badge">⭐ Más popular</div>
+        <span class="pkg-emoji">🔥</span>
+        <div class="pkg-name grad-text">Sin Remordimientos</div>
+        <div class="pkg-tagline">El más completo para transformarte</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-features">
+          <div class="pkg-feature"><span class="pkg-check ck-r">✓</span> Batido nutricional x2</div>
+          <div class="pkg-feature"><span class="pkg-check ck-r">✓</span> Té de hierbas x2</div>
+          <div class="pkg-feature"><span class="pkg-check ck-r">✓</span> Suplemento de proteína</div>
+          <div class="pkg-feature"><span class="pkg-check ck-r">✓</span> Plan de alimentación</div>
+          <div class="pkg-feature"><span class="pkg-check ck-r">✓</span> Seguimiento semanal</div>
+          <div class="pkg-feature"><span class="pkg-check ck-r">✓</span> Acceso al grupo de retos</div>
+        </div>
+        <a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20el%20paquete%20Sin%20Remordimientos" class="pkg-btn pkg-btn-red ripple-btn" target="_blank">Este es el mío</a>
+        <div class="scarcity" style="margin-top:1rem;margin-bottom:0">
+          <div class="scarcity-label"><span class="scarcity-text" style="color:var(--red)">🔥 Casi agotado</span><span class="scarcity-count">3 de 10</span></div>
+          <div class="scarcity-bar"><div class="scarcity-fill fill-red" data-width="30"></div></div>
+          <div class="scarcity-urgent">⚡ Solo quedan 3 paquetes este mes</div>
+        </div>
+      </div>
+      <div class="pkg-card reveal delay-3">
+        <span class="pkg-emoji">🏆</span>
+        <div class="pkg-name">Transformación Total</div>
+        <div class="pkg-tagline">Para el que va en serio</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-features">
+          <div class="pkg-feature"><span class="pkg-check ck-l">✓</span> Todo del paquete esencial</div>
+          <div class="pkg-feature"><span class="pkg-check ck-l">✓</span> Vitaminas y minerales</div>
+          <div class="pkg-feature"><span class="pkg-check ck-l">✓</span> Evaluación nutricional completa</div>
+          <div class="pkg-feature"><span class="pkg-check ck-l">✓</span> Asesoría personalizada 1:1</div>
+          <div class="pkg-feature"><span class="pkg-check ck-l">✓</span> Seguimiento diario 30 días</div>
+        </div>
+        <a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20el%20paquete%20Transformaci%C3%B3n%20Total" class="pkg-btn pkg-btn-teal ripple-btn" target="_blank">Lo quiero</a>
+        <div class="scarcity" style="margin-top:1rem;margin-bottom:0">
+          <div class="scarcity-label"><span class="scarcity-text" style="color:var(--lime)">🎯 Cupos exclusivos</span><span class="scarcity-count">2 de 5</span></div>
+          <div class="scarcity-bar"><div class="scarcity-fill fill-lime" data-width="40"></div></div>
+          <div class="scarcity-urgent" style="color:var(--gold)">⏳ Solo 2 cupos disponibles</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-dark2"></div>
+  </div>
+  <div class="container">
+    <div class="guarantee-seal reveal">
+      <div class="seal-inner">
+        <span class="seal-icon">🛡️</span>
+        <div class="seal-days">30</div>
+        <div class="seal-unit">días</div>
+        <div class="seal-word">Garantía total</div>
+      </div>
+    </div>
+    <div class="guarantee-text reveal delay-1">
+      <p class="section-tag" style="color:var(--gold)">Sin riesgo</p>
+      <h2>Si no ves resultados,<br><span class="grad-text">te devolvemos cada peso</span></h2>
+      <p>Creemos tanto en lo que hacemos que lo respaldamos con una garantía completa. Pruébalo durante 30 días — si no estás satisfecho, te reembolsamos sin preguntas.</p>
+      <div class="guarantee-points">
+        <div class="guarantee-point"><div class="gp-icon gp-r">✓</div> Reembolso completo si no ves resultados en 30 días</div>
+        <div class="guarantee-point"><div class="gp-icon gp-g">✓</div> Sin formularios complicados, sin letras pequeñas</div>
+        <div class="guarantee-point"><div class="gp-icon gp-t">✓</div> Acompañamiento incluido durante todo el proceso</div>
+        <div class="guarantee-point"><div class="gp-icon gp-l">✓</div> Más de 1.200 personas ya lo comprobaron</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS — fondo: frutas frescas -->
+<section class="products">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-teal"></div>
+  </div>
+  <div class="container">
+    <p class="section-tag reveal" style="color:var(--teal)">O a tu ritmo</p>
+    <h2 class="section-title reveal delay-1">Productos <em style="color:var(--teal)">individuales</em></h2>
+    <p class="products-sub reveal delay-2">¿Prefieres elegir tú? Escoge lo que necesitas y lo personalizamos para ti.</p>
+    <div class="products-grid">
+      <div class="product-card"><span class="product-emoji">🥤</span><div class="product-name">Batido Nutricional</div><p class="product-desc">Reemplaza una o dos comidas con sabor real. Más de 20 sabores.</p><a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20info%20del%20batido" class="product-link" target="_blank">Pedir por WhatsApp →</a></div>
+      <div class="product-card"><span class="product-emoji">🍵</span><div class="product-name">Té de Hierbas</div><p class="product-desc">Activa tu metabolismo. El ritual de la mañana que querrás repetir.</p><a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20info%20del%20té" class="product-link" target="_blank">Pedir por WhatsApp →</a></div>
+      <div class="product-card"><span class="product-emoji">💪</span><div class="product-name">Proteína</div><p class="product-desc">Recuperación, músculo y energía en un solo producto.</p><a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20info%20sobre%20proteína" class="product-link" target="_blank">Pedir por WhatsApp →</a></div>
+      <div class="product-card"><span class="product-emoji">✨</span><div class="product-name">Vitaminas</div><p class="product-desc">Lo que tu cuerpo necesita cada día y que la comida sola no da.</p><a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20info%20de%20vitaminas" class="product-link" target="_blank">Pedir por WhatsApp →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW — fondo sutil gente activa -->
+<section class="how" id="como-funciona">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-cream"></div>
+  </div>
+  <div class="container">
+    <p class="section-tag reveal" style="color:var(--gold)">El proceso</p>
+    <h2 class="section-title reveal delay-1">Así de <em style="color:var(--gold)">sencillo</em></h2>
+    <div class="how-grid">
+      <div class="how-step reveal delay-1"><div class="how-number">01</div><span class="how-icon">💬</span><h3 class="how-title">Nos escribes</h3><p class="how-desc">Por WhatsApp te contamos todo, resolvemos tus dudas y elegimos qué es mejor para ti.</p></div>
+      <div class="how-step reveal delay-2"><div class="how-number">02</div><span class="how-icon">📦</span><h3 class="how-title">Recibes tus productos</h3><p class="how-desc">Te llegan directamente. También puedes comprar en la tienda oficial si lo prefieres.</p></div>
+      <div class="how-step reveal delay-3"><div class="how-number">03</div><span class="how-icon">🚀</span><h3 class="how-title">Empiezas y te acompañamos</h3><p class="how-desc">No te dejamos solo. Tienes seguimiento, comunidad y un asesor que te respalda cada semana.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS — fondo: personas felices -->
+<section class="testimonials">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-white"></div>
+  </div>
+  <div class="container">
+    <p class="section-tag reveal" style="color:var(--lime)">Lo que dicen</p>
+    <h2 class="section-title reveal delay-1">Resultados <em style="color:var(--lime)">reales</em></h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal delay-1"><div class="testi-top"><div class="testi-avatar av1">😊</div><div><div class="testi-name">Valentina M.</div><div class="testi-role">Cali · Paquete Esencial</div></div></div><div class="testi-stars">★★★★★</div><p class="testi-text">"Llevaba años intentando bajar de peso con dietas horribles. En 3 semanas ya vi resultados — y sin pasar hambre."</p></div>
+      <div class="testi-card reveal delay-2"><div class="testi-top"><div class="testi-avatar av2">💪</div><div><div class="testi-name">Andrés T.</div><div class="testi-role">Medellín · Transformación Total</div></div></div><div class="testi-stars">★★★★★</div><p class="testi-text">"Lo que más me sorprendió fue la energía. Entreno 4 veces a la semana y nunca había tenido tanto rendimiento."</p></div>
+      <div class="testi-card reveal delay-3"><div class="testi-top"><div class="testi-avatar av3">🌸</div><div><div class="testi-name">Carolina R.</div><div class="testi-role">Bogotá · Primer Paso</div></div></div><div class="testi-stars">★★★★★</div><p class="testi-text">"Empecé con el paquete básico sin mucha expectativa. Al mes pedí el esencial. El acompañamiento hace toda la diferencia."</p></div>
+    </div>
+  </div>
+</section>
+
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-cream"></div>
+  </div>
+  <div class="container">
+    <p class="section-tag reveal" style="color:var(--red)">Resolvemos tus dudas</p>
+    <h2 class="section-title reveal delay-1">Preguntas <em style="color:var(--red)">frecuentes</em></h2>
+    <div class="faq-list">
+      <div class="faq-item reveal delay-1">
+        <div class="faq-q">¿Necesito hacer dieta estricta para ver resultados? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">No. De hecho, ese es exactamente el punto de Sin Remordimientos. Nuestros productos están diseñados para complementar tu alimentación sin pedirte que sacrifiques todo lo que disfrutas. Pequeños ajustes, grandes resultados.</div></div>
+      </div>
+      <div class="faq-item reveal delay-2">
+        <div class="faq-q">¿En cuánto tiempo empiezo a ver cambios? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">La mayoría de nuestros clientes reportan cambios notorios en energía y bienestar desde la primera semana. Los cambios físicos visibles suelen aparecer entre la semana 2 y 4, dependiendo del metabolismo y constancia de cada persona.</div></div>
+      </div>
+      <div class="faq-item reveal delay-3">
+        <div class="faq-q">¿Funciona si no hago ejercicio? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Sí. El ejercicio potencia los resultados pero no es obligatorio para empezar. Muchos de nuestros clientes han logrado transformaciones significativas solo con los cambios nutricionales. Si ya haces ejercicio, verás resultados aún más rápido.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">¿Puedo tomarlo si tengo alguna condición médica? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Siempre recomendamos consultar con tu médico si tienes condiciones específicas. Sin embargo, nuestros productos son alimentos nutricionales de consumo general, seguros para la mayoría de personas. Tu asesor personal te orientará en cada caso.</div></div>
+      </div>
+      <div class="faq-item reveal delay-1">
+        <div class="faq-q">¿Cómo recibo mi pedido? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Tienes dos opciones: te lo enviamos directamente a tu casa, o puedes comprarlo en la tienda oficial. Coordinamos todo por WhatsApp para que el proceso sea lo más fácil posible para ti.</div></div>
+      </div>
+      <div class="faq-item reveal delay-2">
+        <div class="faq-q">¿Qué pasa si no me gustan los productos? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Tenemos garantía de 30 días. Si en ese tiempo sientes que el producto no es para ti, te devolvemos tu inversión completa sin preguntas. Así de seguros estamos de lo que ofrecemos.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA — fondo: vida activa fitness -->
+<section class="final-cta" id="contacto">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=1920&auto=format&fit=crop&q=80" alt="" loading="lazy">
+    <div class="bg-overlay-dark"></div>
+  </div>
+  <div class="cta-rings">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+  </div>
+  <div class="container">
+    <h2 class="reveal">Tu mejor versión<br>empieza <span class="grad-text">hoy</span></h2>
+    <p class="cta-sub reveal delay-1">Sin compromisos, sin letra pequeña. Solo dinos qué buscas y llegamos juntos.</p>
+    <div class="cta-btns reveal delay-2">
+      <a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20empezar%20con%20Sin%20Remordimientos" class="whatsapp-btn ripple-btn" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Quiero empezar por WhatsApp
+      </a>
+      <a href="#" class="store-btn" target="_blank" rel="noopener">🛒 Comprar en tienda oficial</a>
+    </div>
+    <p class="cta-note">Respuesta en minutos · Asesoría gratuita · Sin presión</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo grad-text">Sin Remordimientos</div>
+  <p class="footer-text">© 2025 Sin Remordimientos · Nutrición · Bienestar · Vida</p>
+</footer>
+
+<!-- BACK TO TOP -->
+<a href="#" class="back-top" id="backTop" aria-label="Volver arriba">
+  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+  </svg>
+</a>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20empezar%20con%20Sin%20Remordimientos" class="float-wa" target="_blank" rel="noopener">
+  <div class="float-wa-badge">1</div>
+  <svg class="float-wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Escríbenos ahora
+</a>
+
+<!-- STICKY MOBILE CTA -->
+<div class="sticky-cta">
+  <a href="https://wa.me/57XXXXXXXXXX?text=Hola%2C%20quiero%20empezar%20con%20Sin%20Remordimientos" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Quiero empezar — Escríbenos por WhatsApp
+  </a>
+</div>
+
+<script>
+  // ── Scroll reveal ──────────────────────────────────────────
+  const io = new IntersectionObserver(e => e.forEach(el => {
+    if(el.isIntersecting){ el.target.classList.add('visible'); io.unobserve(el.target); }
+  }), {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.pain-list,.products-grid,.solution-pills').forEach(p => {
+    [...p.children].forEach((c,i)=>{ c.classList.add('reveal'); c.style.transitionDelay=`${i*0.08}s`; io.observe(c); });
+  });
+
+  // ── Animated counters ──────────────────────────────────────
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(el => {
+      if(!el.isIntersecting) return;
+      const el2 = el.target;
+      const target  = parseFloat(el2.dataset.target);
+      const decimal = parseInt(el2.dataset.decimal||0);
+      const suffix  = el2.dataset.suffix||'';
+      const prefix  = el2.dataset.prefix||'';
+      const dur = 1800, start = performance.now();
+      const tick = now => {
+        const p = Math.min((now-start)/dur,1);
+        const ease = 1-Math.pow(1-p,3);
+        const val = target*ease;
+        el2.textContent = prefix+(decimal ? val.toFixed(decimal) : Math.floor(val).toLocaleString())+suffix;
+        if(p<1) requestAnimationFrame(tick);
+        else el2.textContent = prefix+(decimal ? target.toFixed(decimal) : target.toLocaleString())+suffix;
+      };
+      requestAnimationFrame(tick);
+      counterObs.unobserve(el2);
+    });
+  }, {threshold:0.5});
+  document.querySelectorAll('[data-target]').forEach(el => counterObs.observe(el));
+
+  // ── Scarcity bars ──────────────────────────────────────────
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const fill = e.target;
+      setTimeout(()=>{ fill.style.width = fill.dataset.width+'%'; }, 300);
+      barObs.unobserve(fill);
+    });
+  }, {threshold:0.3});
+  document.querySelectorAll('.scarcity-fill').forEach(el => barObs.observe(el));
+
+  // ── FAQ accordion ──────────────────────────────────────────
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── Scroll progress bar + back to top + scroll indicator ──
+  const nav         = document.querySelector('nav');
+  const progressBar = document.getElementById('scrollProgress');
+  const backTop     = document.getElementById('backTop');
+  const scrollInd   = document.getElementById('scrollIndicator');
+  const heroHeight  = document.querySelector('.hero').offsetHeight;
+
+  window.addEventListener('scroll', () => {
+    const scrolled = scrollY;
+    const total    = document.body.scrollHeight - innerHeight;
+
+    // Progress bar
+    progressBar.style.width = (scrolled / total * 100) + '%';
+
+    // Back to top
+    backTop.classList.toggle('visible', scrolled > 400);
+
+    // Scroll indicator hides after leaving hero
+    scrollInd.classList.toggle('hidden', scrolled > heroHeight * 0.3);
+
+    // Nav shadow
+    nav.classList.toggle('scrolled', scrolled > 40);
+  }, {passive: true});
+
+  backTop.addEventListener('click', e => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Ripple effect ──────────────────────────────────────────
+  document.querySelectorAll('.ripple-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const r = document.createElement('span');
+      const rect = btn.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      r.className = 'ripple';
+      r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+      btn.appendChild(r);
+      setTimeout(()=>r.remove(), 600);
+    });
+  });
+</script>
+</body>
+</html>

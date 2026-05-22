@@ -1,0 +1,6 @@
+# Claude Code internal settings
+.claude/
+
+# Node / Vercel
+node_modules/
+.vercel/
