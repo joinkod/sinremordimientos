@@ -1,5 +1,11 @@
 # Sin Remordimientos — Contexto definitivo del proyecto
-*Última actualización: 24 mayo 2026*
+*Última actualización: 14 junio 2026*
+
+---
+
+## 0. Instrucciones para Claude
+
+**Después de cualquier cambio en el código, siempre hacer commit y push al repositorio.** No esperar a que el usuario lo pida explícitamente.
 
 ---
 
@@ -84,7 +90,7 @@ linear-gradient(100deg, #e51924, #fa777c, #d2b540, #a5bd0f, #05a3a4)
 | Botón volver arriba | ✅ Implementado |
 | Ripple en botones | ✅ Implementado |
 | Responsive (≤900px y ≤480px) | ✅ Implementado con media queries |
-| Número WhatsApp real | ❌ Sigue como `57XXXXXXXXXX` en todos los botones |
+| Número WhatsApp real | ✅ `+573017561661` — actualizado en todos los botones |
 | Link tienda oficial Herbalife | ❌ `href="#"` — placeholder |
 | Precios reales de los 3 paquetes | ❌ No aparecen precios en el HTML |
 | Logo SVG retro multicolor | ❌ No existe — el nav usa texto con `grad-text` |
@@ -152,7 +158,7 @@ Con el número WhatsApp aprobado por Meta, actualizar en `index.html`:
 
 | Placeholder | Reemplazar con |
 |---|---|
-| `57XXXXXXXXXX` (aparece 9 veces) | Número real de WhatsApp Business |
+| ~~`57XXXXXXXXXX`~~ | ✅ Reemplazado por `573017561661` |
 | `href="#"` del botón tienda | URL real de tienda oficial Herbalife |
 | Precios de los 3 paquetes | Valores reales en COP |
 | Stats bar (1247, 4.9, 98%, -8kg) | Números reales del negocio |
